@@ -36,6 +36,10 @@ class Magento(MagentoConnection):
     def getImagesOfProducts(self, sku):
         '''Retrieves all images of a product'''
         return self._call('catalog_product_attribute_media.list', [sku])
+        
+    def updateImageOfProducts(self, sku, image_location, image_data):
+        '''Update image data of a image'''
+        return self._call('catalog_product_attribute_media.update', [sku, image_location, image_data])
     
     def removeImageOfProduct(self, sku, image_location):
         '''Remove a image of a product'''
@@ -51,7 +55,33 @@ class Magento(MagentoConnection):
                       'file': {'content': encoded_string, 
                                'mime': 'image/jpeg'}}
         return self._call('catalog_product_attribute_media.create', [sku, image_data])
-            
+        
+    #CATEGORY OPERARTIONS
+    def createCategory(self, parent_category_id, categorydata):
+        '''Create a category'''
+        return self._call('catalog_category.create', [parent_category_id, categorydata])
+        
+    def assignProduct(self, category_id, product_sku):
+        '''Assign a product to a category'''
+        return self._call('catalog_category.assignProduct', [category_id, product_sku])
+        
+    def updateCategory(self, category_id, categorydata):
+        '''Update a category'''
+        return self._call('catalog_category.update', [category_id, categorydata])
+        
+    def moveCategory(self, category_id, parent_id):
+        '''Move category into another category'''
+        return self._call('catalog_category.move', [category_id, parent_id])
+        
+    def treeCategory(self, parent_id):
+        '''Retrieve category tree'''
+        return self._call('catalog_category.tree', [parent_id,])
+        
+    def assignedProducts(self, category_id, store_id):
+        '''Retrieve all assigned products'''
+        return self._call('catalog_category.assignedProducts', [category_id, store_id])
+                
+        
 if __name__ == "__main__":
     MAGENTO_XMLRPC_URL = 'http://www.yourmagento.com/index.php/api/xmlrpc/'
 
